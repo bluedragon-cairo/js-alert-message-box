@@ -1,9 +1,8 @@
-const prompts = Cc['@mozilla.org/embedcomp/prompt-service;1'].getService(Ci.nsIPromptService);
-const os = Components.classes['@mozilla.org/observer-service;1'].getService(Components.interfaces.nsIObserverService);
-const stringBundles = Cc['@mozilla.org/intl/stringbundle;1'].getService(Ci.nsIStringBundleService).createBundle('chrome://jsalertmsgbox/locale/browserOverlay.properties');
+const Cc = Components.classes, Ci = Components.interfaces, Cu = Components.utils;
+Cu.import('resource://gre/modules/Services.jsm');
+const stringBundles = Services.strings.createBundle('chrome://jsalertmsgbox/locale/browserOverlay.properties');
 
-
-os.addObserver({
+Services.obs.addObserver({
     observe: function(win, _t) {
         if(win instanceof Ci.nsIDOMWindow && _t == 'content-document-global-created') {
 			const defaultTitle = '[' + stringBundles.GetStringFromName('defaultTitle') + ']';
@@ -16,9 +15,9 @@ os.addObserver({
 				if(noalert) return;
 				++alertCount;
 				if(alertCount < 2)
-					return prompts.alert(win, title, prpt);
+					return Services.prompt.alert(win, title, prpt);
 				const dontPrompt = { value: false };
-				const retval = prompts.alertCheck(win, title, prpt, chklbl, dontPrompt);
+				const retval = Services.prompt.alertCheck(win, title, prpt, chklbl, dontPrompt);
 				if(dontPrompt.value)
 					noalert = true;
 				return retval;
@@ -28,9 +27,9 @@ os.addObserver({
 				if(noconfirm) return false;
 				++confirmCount;
 				if(confirmCount < 2)
-					return prompts.confirm(win, title, prpt);
+					return Services.prompt.confirm(win, title, prpt);
 				const dontPrompt = { value: false };
-				const retval = prompts.confirmCheck(win, title, prpt, chklbl, dontPrompt);
+				const retval = Services.prompt.confirmCheck(win, title, prpt, chklbl, dontPrompt);
 				if(dontPrompt.value)
 					noconfirm = true;
 				return retval;
@@ -38,7 +37,7 @@ os.addObserver({
 			
             win.wrappedJSObject._OLDALERT_prompt = function prompt(prpt = '', value = '', title = defaultTitle) {
 				const input = { value };
-				const ret = prompts.prompt(win, title, prpt, input, null, { value: false });
+				const ret = Services.prompt.prompt(win, title, prpt, input, null, { value: false });
 				if(!ret) return null;
 				return input.value;
 			};
