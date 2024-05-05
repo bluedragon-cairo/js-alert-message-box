@@ -6,9 +6,10 @@ Services.obs.addObserver({
     observe: function(win, _t) {
         if(!(win instanceof Ci.nsIDOMWindow && _t == 'content-document-global-created')) return;
 		
-		const defaultTitle = '[' + stringBundles.GetStringFromName('defaultTitle') + ']';
+		var defaultTitle = '[' + stringBundles.GetStringFromName('defaultTitleUntitled') + ']'
+		if(win.wrappedJSObject.location && win.wrappedJSObject.location.hostname)
+			defaultTitle = stringBundles.GetStringFromName('defaultTitle').replace('$HOST', win.wrappedJSObject.location.protocol + '//' + win.wrappedJSObject.location.hostname);
 		const chklbl = stringBundles.GetStringFromName('checklabel');
-		// const defaultTitle = win.wrappedJSObject.location.protocol + '//' + win.wrappedJSObject.location.hostname + ' 페이지 정보: ';
 		var alertCount = 0, confirmCount = 0;
 		var noalert = false, noconfirm = false;
 		
