@@ -57,13 +57,17 @@ const observers = {
 				wantXrays: false,
 			});
 			
-			Cu.evalInSandbox('window.alert = function alert(message, title) { return _OLDALERT_alert_' + uid + '(message, title); };', sandbox);
-			Cu.evalInSandbox('window.confirm = function confirm(message, title) { return _OLDALERT_confirm_' + uid + '(message, title); };', sandbox);
-			Cu.evalInSandbox('window.prompt = function prompt(message, def, title) { return _OLDALERT_prompt_' + uid + '(message, def, title); };', sandbox);
+			Cu.evalInSandbox('window.alert = function alert() { return _OLDALERT_alert_' + uid + '(arguments[0], arguments[1]); };', sandbox);
+			Cu.evalInSandbox('window.confirm = function confirm() { return _OLDALERT_confirm_' + uid + '(arguments[0], arguments[1]); };', sandbox);
+			Cu.evalInSandbox('window.prompt = function prompt() { return _OLDALERT_prompt_' + uid + '(arguments[0], arguments[1], arguments[2]); };', sandbox);
 			
 			Cu.evalInSandbox('window.alert.toString = function toString() { return "function alert() {\\n    [native code]\\n}"; };', sandbox);
 			Cu.evalInSandbox('window.confirm.toString = function toString() { return "function confirm() {\\n    [native code]\\n}"; };', sandbox);
 			Cu.evalInSandbox('window.prompt.toString = function toString() { return "function prompt() {\\n    [native code]\\n}"; };', sandbox);
+			
+			Cu.evalInSandbox('window.alert.toSource = function toSource() { return "function alert() {\\n    [native code]\\n}"; };', sandbox);
+			Cu.evalInSandbox('window.confirm.toSource = function toSource() { return "function confirm() {\\n    [native code]\\n}"; };', sandbox);
+			Cu.evalInSandbox('window.prompt.toSource = function toSource() { return "function prompt() {\\n    [native code]\\n}"; };', sandbox);
 		},
 		register() {
 			Services.obs.addObserver(observers.contentCreated, 'content-document-global-created', false);

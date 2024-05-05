@@ -7,7 +7,7 @@
     <em:id>{78c79379-1502-4792-968a-6c173718a93a}</em:id>
     <em:name>Old style JavaScript Alert</em:name>
     <em:description>Shows the message box as a system modal like in early Firefox versions, Netscape, Internet Explorer and K-Meleon.</em:description>
-    <em:version>1.3.4</em:version>
+    <em:version>1.3.5</em:version>
     <em:creator>길고(달빛)</em:creator>
     <em:type>2</em:type>
     <em:bootstrap>true</em:bootstrap>
