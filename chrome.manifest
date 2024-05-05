@@ -1,0 +1,6 @@
+content   jsalertmsgbox                 content/
+skin      jsalertmsgbox   classic/1.0   skin/
+locale    jsalertmsgbox   en-US         locale/en-US/
+locale    jsalertmsgbox   ko            locale/ko/
+
+overlay chrome://browser/content/browser.xul  chrome://jsalertmsgbox/content/browserOverlay.xul
